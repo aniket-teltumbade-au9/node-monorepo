@@ -26,7 +26,17 @@ class ErrorBoundary extends React.Component {
 ErrorBoundary.propTypes = {
 	children: PropTypes.node,
 };
-
+const typeValue = (type)=>{
+	switch (type) {
+		case 'array': return null;
+		case 'currency':
+		case 'inr':
+		case 'mobile':
+		case 'pincode': return 'number';
+		case 'switch': return 'checkbox';
+		default: return type || 'text';
+	}
+}
 const module = function({type, rhf}) {
 	switch (type) {
 		case 'array':
@@ -58,6 +68,7 @@ function Input({type, container, validate, label, rhf = true, components: {input
 	const Container = container ? require('@material-ui/core/Grid').default : Fragment;
 	const containerProps = container ? {item: true, ...container} : {};
 	Field = Field || module({type, rhf});
+	type = typeValue(type)
 	const extraProps = {...{compact, type, label, components}};
 	return (
 		<ErrorBoundary>
